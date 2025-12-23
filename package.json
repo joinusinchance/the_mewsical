@@ -1,0 +1,24 @@
+{
+  "name": "the-mewsical-reprise",
+  "version": "1.0.0",
+  "description": "I-mog-en: The Mewsical - A rhythm action",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "local": "powershell -ExecutionPolicy Bypass -File ./scripts/start-local.ps1 -OpenBrowser",
+    "test": "echo \"No tests configured yet\""
+  },
+  "keywords": [
+    "game",
+    "rhythm",
+    "action",
+    "web",
+    "cats",
+    "leaderboard"
+  ],
+  "author": "",
+  "dependencies": {
+    "tailwindcss": "^3.0.0"
+  },
+  "devDependencies": {}
+}

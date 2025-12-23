@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I-mog-en: The Mewsical</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="./src/css/styles.css">
+</head>
+<body class="bubble-bg min-h-screen flex items-center justify-center p-4">
+
+    <div id="game-container" class="w-full max-w-md bg-white/90 backdrop-blur-sm rounded-3xl p-6 md:p-10 text-center border-4 border-pink-500 shadow-2xl">
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="hud-layer">
+            <div id="score-board" class="garish-text">S: 0</div>
+            <div id="combo-board" class="garish-text">C: x0</div>
+            <div id="lyrics-container"></div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="overlay">
+            <div class="relative h-96 sm:h-[30rem] mb-2">
+                <div class="relative z-20 pt-7">
+                    <h1 class="bubble-title text-7xl sm:text-8xl md:text-9xl select-none whitespace-nowrap -ml-3">
+                        I MOG EN
+                    </h1>
+                    <p class="subtitle-garish text-2xl md:text-4xl font-bold tracking-wider">
+                        The Mewsical!
+                    </p>
+                </div>
+                <div class="absolute inset-x-0 -bottom-24 z-10 flex justify-center">
+                    <img 
+                        src="https://joinusinchance.github.io/game/I_mog_en_front.png" 
+                        alt="Imogen the cat" 
+                        class="cat-animated w-full max-w-xs h-auto block transform origin-bottom"
+                        onerror="this.onerror=null;this.src='https://placehold.co/200x200/ff69b4/ffffff?text=CAT+IMAGE'"
+                    />
+                </div>
+            </div>
+
+            <div class="mb-6 relative z-20 text-center space-y-1">
+                <p class="feature-text text-2xl md:text-3xl">RHYTHM ACTION GAME!</p>
+                <p class="feature-text text-xl md:text-2xl" style="color: #ffff00; text-shadow: 2px 2px 0 #000;">TOUCH OR KEYS D-F-J-K!</p>
+                <p class="feature-text text-2xl md:text-3xl" style="color: #ff69b4; transform: rotate(2deg);">5 ANNOYING SONGS!</p>
+            </div>
+
+            <div class="mb-4 relative z-20 w-full flex justify-center flex-col items-center">
+                <label for="song-select" class="block mb-2 subtitle-garish text-xl md:text-2xl">Choose Your Tune:</label>
+                <select id="song-select" class="song-select-garish w-full text-xl rounded-2xl shadow-lg focus:ring-4 focus:ring-pink-500 transition-colors">
+                    <option value="camptown">Camptown Races</option>
+                    <option value="ode">Ode to Joy</option>
+                    <option value="entertainer">The Entertainer</option>
+                    <option value="korobeiniki">Korobeiniki (Tetris)</option>
+                    <option value="mountain">Hall of Mountain King</option>
+                </select>
+            </div>
+
+            <button id="start-btn" class="start-button w-full py-4 text-4xl font-bold rounded-xl bg-pink-400 text-black hover:bg-pink-300 uppercase relative z-30">
+                Play Now!
+            </button>
+            <button id="view-leaderboard-btn" class="start-button w-full py-3 text-2xl font-bold rounded-xl bg-cyan-400 text-black hover:bg-cyan-300 uppercase relative z-30 mt-4">
+                View High Scores
+            </button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="overlay" style="display: none;">
+            <p class="subtitle-garish text-4xl md:text-6xl font-bold tracking-wider mb-2">
+                Finished!
+            </p>
+
+            <div class="mb-4 space-y-1 text-center">
+                <p class="garish-text" style="font-size: 2.5rem; color: #33ffff;">Score: <span id="final-score">0</span></p>
+                <p class="garish-text" style="font-size: 2rem; color: #FF69B4;">Best Combo: <span id="max-combo">0</span></p>
+                <p id="rank-text" class="garish-text" style="font-size: 2rem; margin-top: 5px; color: #ffff00; transform: rotate(-2deg);"></p>
+            </div>
+
+            <div class="w-full max-w-xs bg-white/50 rounded-xl p-4 mb-4 border-2 border-pink-400">
+                <!-- Submit Screen (shown first when eligible) -->
+                <div id="submit-screen" style="display: none;">
+                    <h3 class="subtitle-garish text-2xl text-center mb-2" style="color:#ff69b4;">Submit Score</h3>
+                    <div class="flex flex-col gap-2">
+                        <input type="text" id="player-name" placeholder="Your Name (Max 10)" maxlength="10" class="w-full text-center" style="border-color:#ff69b4;">
+                        <button id="submit-score-btn" class="start-button py-2 text-xl bg-green-400 text-black hover:bg-green-300 uppercase">
+                            Save to Leaderboard!
+                        </button>
+                        <button id="submit-skip-btn" class="mt-2 text-sm text-pink-600 hover:text-pink-800 underline">Skip &amp; View Leaderboard</button>
+                        <p id="submit-msg" class="text-sm font-bold text-pink-600 hidden"></p>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Screen (shown after submit or when not eligible) -->
+                <div id="leaderboard-screen" style="display: none;">
+                    <h3 class="subtitle-garish text-2xl text-center mb-2" style="color:#33ffff;">High Scores</h3>
+                    <div id="leaderboard-loading" class="text-center font-bold text-purple-600">Loading...</div>
+                    <table class="leaderboard-table hidden" id="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cat</th>
+                                <th class="text-right">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="w-full flex flex-col gap-4 relative z-30 pb-10">
+                <button id="restart-btn" class="start-button w-full py-3 text-2xl font-bold rounded-full bg-pink-500 text-black border-4 border-cyan-500 hover:bg-pink-400 uppercase">
+                    Play Again!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./src/js/config.js"></script>
+    <script src="./src/data/songs.js"></script>
+    <script src="./src/js/audio.js"></script>
+    <script src="./src/js/game.js"></script>
+    <script src="./src/js/leaderboard.js"></script>
+    <script src="./src/js/main.js"></script>
+</body>
+</html>
