@@ -257,8 +257,14 @@ class UIManager {
     renderLeaderboard(detail) {
         const { scores, highlight } = detail;
         const body = this.elements.leaderboardBody;
+        const table = this.elements.leaderboardTable;
+        const loading = this.elements.leaderboardLoading;
 
         body.innerHTML = '';
+
+        // Hide loading indicator and show table
+        if (loading) loading.style.display = 'none';
+        if (table) table.classList.remove('hidden');
 
         if (!scores || scores.length === 0) {
             body.innerHTML = '<tr><td colspan="3" class="text-center text-gray-500">No scores yet</td></tr>';

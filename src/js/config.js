@@ -4,9 +4,11 @@
  */
 
 // --- API CONFIGURATION ---
+// Use local proxy in development (localhost), real API in production
+const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const CONFIG = {
     API: {
-        BASE_URL: 'https://lb.yogurtthehor.se/api/v1',
+        BASE_URL: isDev ? 'http://localhost:3000/api/v1' : 'https://lb.yogurtthehor.se/api/v1',
         LEADERBOARD_ID: '110',
         LEADERBOARD_SECRET: 'cbc93a61277d48e7acd7487d65b46ec8'
     },

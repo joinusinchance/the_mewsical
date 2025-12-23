@@ -4,6 +4,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const REMOTE = 'https://lb.yogurtthehor.se/api/v1';
 
+app.use(express.json());
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
@@ -18,11 +20,15 @@ app.use('/api/v1', async (req, res) => {
     const method = req.method;
     const headers = { ...req.headers };
     delete headers.host;
+    delete headers['content-length'];
+
+    let body = undefined;
+    if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
+      body = Object.keys(req.body).length > 0 ? JSON.stringify(req.body) : undefined;
+    }
 
     const opts = { method, headers };
-    if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
-      opts.body = JSON.stringify(req.body);
-    }
+    if (body) opts.body = body;
 
     const r = await fetch(url, opts);
     const text = await r.text();
@@ -30,6 +36,7 @@ app.use('/api/v1', async (req, res) => {
     res.set('Content-Type', r.headers.get('content-type') || 'application/json');
     res.send(text);
   } catch (e) {
+    console.error('Proxy error:', e);
     res.status(502).json({ error: 'Proxy error', message: e.message });
   }
 });
