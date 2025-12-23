@@ -101,6 +101,9 @@ function setupUIHandlers() {
         ui.showScreen('gameOverScreen');
         ui.elements.submitScreen.style.display = 'none';
         ui.elements.leaderboardScreen.style.display = 'block';
+        // hide results header when viewing leaderboard from start
+        const resultsHeader = document.getElementById('results-header');
+        if (resultsHeader) resultsHeader.style.display = 'none';
         await leaderboard.fetchScores(5);
     });
 
@@ -112,6 +115,8 @@ function setupUIHandlers() {
         e.preventDefault();
         ui.elements.submitScreen.style.display = 'none';
         ui.elements.leaderboardScreen.style.display = 'block';
+        const resultsHeader = document.getElementById('results-header');
+        if (resultsHeader) resultsHeader.style.display = 'none';
         leaderboard.fetchScores(5);
     });
 }

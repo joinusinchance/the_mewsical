@@ -9,8 +9,8 @@ const isDev = window.location.hostname === 'localhost' || window.location.hostna
 const CONFIG = {
     API: {
         BASE_URL: isDev ? 'http://localhost:3000/api/v1' : 'https://lb.yogurtthehor.se/api/v1',
-        LEADERBOARD_ID: '110',
-        LEADERBOARD_SECRET: 'cbc93a61277d48e7acd7487d65b46ec8'
+        LEADERBOARD_ID: '106',
+        LEADERBOARD_SECRET: 'ed26e5e211b8442fa21c05df772c37cf'
     },
     
     AUDIO: {

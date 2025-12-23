@@ -26,8 +26,22 @@ class LeaderboardManager {
             const data = await response.json();
 
             if (data && Array.isArray(data.scores)) {
+                // If API returned empty array, try to fall back to locally cached scores
+                let scoresArr = data.scores;
+                if ((!scoresArr || scoresArr.length === 0)) {
+                    try {
+                        const cached = localStorage.getItem('cachedLeaderboardScores');
+                        const parsed = cached ? JSON.parse(cached) : null;
+                        if (parsed && Array.isArray(parsed) && parsed.length > 0) {
+                            scoresArr = parsed;
+                        }
+                    } catch (e) {
+                        // ignore parse errors
+                    }
+                }
+
                 // Sort descending (highest score first)
-                this.lastScores = data.scores.sort((a, b) => b.value - a.value).slice(0, limit);
+                this.lastScores = (scoresArr || []).sort((a, b) => b.value - a.value).slice(0, limit);
 
                 // Dispatch event with highlight info
                 window.dispatchEvent(new CustomEvent('leaderboardLoaded', {
@@ -356,10 +370,16 @@ class UIManager {
             // Show submit screen first
             this.elements.submitScreen.style.display = 'block';
             this.elements.leaderboardScreen.style.display = 'none';
+            // Show results header when entering a high score
+            const resultsHeader = document.getElementById('results-header');
+            if (resultsHeader) resultsHeader.style.display = 'block';
         } else {
             // Directly show leaderboard
             this.elements.submitScreen.style.display = 'none';
             this.elements.leaderboardScreen.style.display = 'block';
+            // Hide results header when showing leaderboard
+            const resultsHeader = document.getElementById('results-header');
+            if (resultsHeader) resultsHeader.style.display = 'none';
             if (this.elements.submitMsg) {
                 this.elements.submitMsg.classList.remove('hidden');
                 this.elements.submitMsg.innerText = 'Not a Top 5 score — cannot save.';

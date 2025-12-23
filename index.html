@@ -74,14 +74,16 @@
 
         <!-- Game Over Screen -->
         <div id="game-over-screen" class="overlay" style="display: none;">
-            <p class="subtitle-garish text-4xl md:text-6xl font-bold tracking-wider mb-2">
-                Finished!
-            </p>
+            <div id="results-header" style="display: none;">
+                <p class="subtitle-garish text-4xl md:text-6xl font-bold tracking-wider mb-2">
+                    Finished!
+                </p>
 
-            <div class="mb-4 space-y-1 text-center">
-                <p class="garish-text" style="font-size: 2.5rem; color: #33ffff;">Score: <span id="final-score">0</span></p>
-                <p class="garish-text" style="font-size: 2rem; color: #FF69B4;">Best Combo: <span id="max-combo">0</span></p>
-                <p id="rank-text" class="garish-text" style="font-size: 2rem; margin-top: 5px; color: #ffff00; transform: rotate(-2deg);"></p>
+                <div class="mb-4 space-y-1 text-center">
+                    <p class="garish-text" style="font-size: 2.5rem; color: #33ffff;">Score: <span id="final-score">0</span></p>
+                    <p class="garish-text" style="font-size: 2rem; color: #FF69B4;">Best Combo: <span id="max-combo">0</span></p>
+                    <p id="rank-text" class="garish-text" style="font-size: 2rem; margin-top: 5px; color: #ffff00; transform: rotate(-2deg);"></p>
+                </div>
             </div>
 
             <div class="w-full max-w-xs bg-white/50 rounded-xl p-4 mb-4 border-2 border-pink-400">
