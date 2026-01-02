@@ -1,7 +1,7 @@
 /* --- Animation Definitions --- */
 @keyframes textBreath {
     0% { transform: scale(1.0); }
-    50% { transform: scale(1.08); text-shadow: -8px -8px 0 #6d5b9b, 8px 8px 0 #33ffff, -2px -2px 0 #fff; }
+    50% { transform: scale(1.20); text-shadow: -8px -8px 0 #6d5b9b, 8px 8px 0 #33ffff, -2px -2px 0 #fff; }
     100% { transform: scale(1.0); }
 }
 @keyframes colorFlash {
