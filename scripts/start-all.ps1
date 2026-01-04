@@ -17,7 +17,7 @@ Start-Sleep -Milliseconds 500
 
 if ($OpenBrowser) {
     Write-Host "Launching Chrome..." -ForegroundColor Cyan
-    Start-Process "chrome" -ArgumentList "--remote-debugging-port=9222", "http://localhost:$GamePort"
+    Start-Process "chrome" -ArgumentList "--remote-debugging-port=9222", "http://localhost:$GamePort?cachebust=$((Get-Date).Ticks)"
 } else {
     Write-Host "Game running at http://localhost:$GamePort" -ForegroundColor Green
     Write-Host "Proxy running at http://localhost:$ProxyPort -> https://lb.yogurtthehor.se/api/v1" -ForegroundColor Green

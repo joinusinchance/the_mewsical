@@ -17,6 +17,7 @@ class LeaderboardManager {
     async fetchScores(limit = 5, highlight = null) {
         try {
             const url = `${CONFIG.API.BASE_URL}/scores/${CONFIG.API.LEADERBOARD_ID}/${limit}`;
+            console.log("Fetching leaderboard scores from:", url);
             const response = await fetch(url);
 
             if (!response.ok) {
