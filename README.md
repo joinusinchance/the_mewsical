@@ -1,5 +1,7 @@
 # I-mog-en: The Mewsical (Reprise)
 
+▶️ Play the game: https://joinusinchance.github.io/the_mewsical/
+
 A vibrant, browser-based rhythm action game featuring I-mog-en the cat and 5 classic melodies. Hit the notes in sync with the music to rack up points and claim a spot on the leaderboard!
 
 ## Features
